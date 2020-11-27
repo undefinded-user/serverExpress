@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 require('dotenv').config()
 
+// import routes
+const authRoutes = require('./routes/auth.js')
 // create express app
 const app = express()
 
@@ -23,16 +25,9 @@ app.use(bodyParser.json({limit: '2mb'}))
 app.use(cors())
 app.use(morgan('dev'))
 
-
-// routes
-
-app.get('/api', (req, res) => {
-	res.json({message : 'Taht is working'})
-})
-
-app.get('/', (req, res) => {
-	res.json({message : 'This is home page'})
-})
+// routes middleware
+app.use('/api', authRoutes)
+	
 
 // port 
 const port = process.env.PORT||8000
