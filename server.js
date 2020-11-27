@@ -4,9 +4,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 require('dotenv').config()
+const { readdirSync } = require('fs')
 
-// import routes
-const authRoutes = require('./routes/auth.js')
 // create express app
 const app = express()
 
@@ -26,7 +25,7 @@ app.use(cors())
 app.use(morgan('dev'))
 
 // routes middleware
-app.use('/api', authRoutes)
+readdirSync('./routes').map((route) => app.use('/api', require('./routes/' + route)))
 	
 
 // port 
