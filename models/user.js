@@ -1,11 +1,11 @@
-const { Schema } = require('mongoose')
-const { ObjectId} = Schema
+const mongoose = require('mongoose')
+const { ObjectId} = mongoose.Schema
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
 	name: String,
 	email: {
 		type: String,
-		required: true
+		required: true,
 		index: true
 	},
 	role: {
@@ -23,6 +23,4 @@ const userSchema = new Schema({
 	// }
 }, {timestamps: true})
 
-const User = new userSchema
-
-module.exports = User
+module.exports = mongoose.model('User', userSchema)
