@@ -87,6 +87,19 @@ exports.read = async (req, res) => {
 	
 }
 
+exports.populateAndRead = async (req, res) => {
+	try{
+		const slug = req.params.slug
+		const result = await Product.findOne({slug})
+		.populate('category')
+		.populate('subs')
+		.exec()
+		res.json(result)
+	} catch(error) {
+		res.status(400).json(error)
+	}
+}
+
 exports.remove = async (req, res) => {
 	try{
 		const slug = req.params.slug
