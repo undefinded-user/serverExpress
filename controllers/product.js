@@ -26,16 +26,37 @@ exports.list = async (req, res) => {
 		res.status(400).json(error)
 	}	
 }
+// WITHOUT PAGINATION
+// exports.listSorted = async (req, res) => {
+// 	try{
+// 		// createdAt/updatedAt desc/asc quantity of products
+// 		const {sort, order, limit} = req.body
+// 		const products = await Product.find({})
+// 		.sort([[sort, order]])
+// 		.limit(limit)
+// 		.exec()
+// 		res.json(products)
+// 	} catch(error) {
+// 		console.log(error)
+// 		res.status(400).json(error.message)
+// 	}
+// }
 
+// WITH PAGINATION
 exports.listSorted = async (req, res) => {
 	try{
 		// createdAt/updatedAt desc/asc quantity of products
-		const {sort, order, limit} = req.body
+		const {sort, order, page} = req.body
+		const currentPage = page || 1
+		const perPage = 3
+		console.log(sort, order, page)
+
 		const products = await Product.find({})
 		.sort([[sort, order]])
-		.limit(limit)
+		// SKIP PREV PAGES PRODUCTS
+		.skip((currentPage -1)*perPage)
 		.exec()
-		res.json(products)
+		res.json(products.splice(0, perPage))
 	} catch(error) {
 		console.log(error)
 		res.status(400).json(error.message)
